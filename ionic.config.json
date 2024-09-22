@@ -1,0 +1,7 @@
+{
+  "name": "benedettoMoney",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
