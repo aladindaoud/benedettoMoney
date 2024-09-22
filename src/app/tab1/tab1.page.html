@@ -1,17 +1,74 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
+    <ion-title>Calendar</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
+      <ion-title size="large">Calendar</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-refresher mode="ios" slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+<hr><hr>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+
+  <ion-item lines="none" >
+    <ion-label>
+      Select a Date
+  </ion-label>
+    <input id="date" type="date" [(ngModel)]="date" (change)="onValueChange(date)" class="p-inputtext" />
+  </ion-item >
+
+  <!-- Display fetched data or no data message -->
+  <div *ngIf="dailyData; else noDataTemplate" style="  
+  display: block;
+  margin: auto;
+  margin-top: 30px;
+  width: 90%;
+  background: #009688;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;">
+    <h3 style="background: #ffffff; padding: 5px; border-radius: 11px; text-align: center;">
+      {{date | date: 'yyyy-MM-dd'}}
+    </h3>
+    <p style="    padding: 10px;
+    background: #FFE082;
+    border-radius: 12px;
+    font-weight: bold;
+    text-align: center;"><strong>Income</strong> {{dailyData.income | currency:'TND'}}</p>
+   
+   <div style="    padding: 5px;
+   background: #E57373;
+   border-radius: 12px;
+   font-weight: bold;">
+    <h4 style="font-weight: bold;text-align: center;">Outcomes</h4>
+  <div *ngFor="let expense of dailyData.expenses">
+    <ion-item  class="deps" mode="ios" lines="none">
+      <ion-label> {{expense.key}}</ion-label>
+      <ion-label slot="end"> {{expense.value | currency:'TND'}}</ion-label>
+    </ion-item>
+  </div>
+    <p><strong>Total</strong> {{dailyData.totalOutcomes | currency:'TND'}}</p>
+  </div>
+  
+    <p style="    padding: 10px;
+    background: #81C784;
+    border-radius: 12px;
+    font-weight: bold;
+    text-align: center;"><strong>Recette</strong> {{dailyData.total | currency:'TND'}}</p>
+    <!-- <ion-button >Télécharger Billet</ion-button> -->
+  </div>
+
+  <ng-template #noDataTemplate>
+    <p style="display: block; margin: auto; width: 300px; padding: 20px; font-weight: bold; margin-top: 30px; border-radius: 12px; text-align: center; background: #E57373;">
+      No data available for this date.
+    </p>
+    <!-- <ion-button (click)="downloadPDF()" mode="ios" *ngIf="false">Download</ion-button> -->
+  </ng-template>
+
 </ion-content>
