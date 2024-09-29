@@ -1,15 +1,15 @@
-<ion-header [translucent]="true">
+<ion-header mode="md" [translucent]="true">
   <ion-toolbar>
     <ion-title>
-    Add
+    Add Daily Finance
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header  mode="md" collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Daily Finance</ion-title>
+      <ion-title size="large">Add Daily Finance</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -45,21 +45,25 @@
 Add
       </ion-button>
   
+
+
+      <h3 class="input">Added outcomes</h3>
+      <div *ngFor="let expense of expenses; let i = index">
+        <ion-item style="border-radius: 7px;" mode="ios" lines="none">
+          <ion-label>{{ expense.key }}</ion-label>
+          <ion-label slot="end">{{ expense.value | currency:'TND': 'TND' }}</ion-label>
+          <ion-button mode="ios" (click)="deleteExpense(i)" color="danger" fill="clear" slot="end">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
+
     </div>
   
-    <h3 class="input">Added outcomes:</h3>
-    <div *ngFor="let expense of expenses; let i = index">
-      <ion-item mode="ios" lines="none">
-        <ion-label>{{ expense.key }}</ion-label>
-        <ion-label slot="end">{{ expense.value | currency: 'TND' }}</ion-label>
-        <ion-button (click)="deleteExpense(i)" color="danger" fill="clear" slot="end">
-          <ion-icon name="trash"></ion-icon>
-        </ion-button>
-      </ion-item>
-    </div>
 
 
-    <ion-button style="    width: -webkit-fill-available;
+
+    <ion-button mode="ios" style="    width: -webkit-fill-available;
     margin-top: 15px;" (click)="saveRecord()">
       <ion-icon name="add" slot="start"></ion-icon>
 Save

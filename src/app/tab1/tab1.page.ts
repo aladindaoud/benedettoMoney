@@ -1,10 +1,21 @@
 import { Component } from '@angular/core';
 import { PouchdbService } from '../pouchdb.service'; // Adjust the import according to your structure
 import { formatDate } from '@angular/common';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+// Set up the font files (vfs)
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
-/*import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-*/
+const blobToBase64 = (blob: Blob): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+};
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -17,9 +28,9 @@ export class Tab1Page {
   dailyData: any; // To hold the fetched data
 
   constructor(private pouchdbService: PouchdbService) {
-   // pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    
 
- 
+   
    
 
     this.date =  formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
@@ -49,7 +60,7 @@ export class Tab1Page {
         this.dailyData.totalOutcomes = this.calculateTotalOutcomes(this.dailyData.expenses);
         this.dailyData.total = this.dailyData.income - this.dailyData.totalOutcomes;
       }
-      console.log(this.dailyData); // For debugging
+    
     } catch (error) {
       console.error('Error fetching daily data:', error);
       this.dailyData = null; // Reset on error
@@ -61,29 +72,63 @@ export class Tab1Page {
   }
 
   onPanelChange(change: { date: Date; mode: string }): void {
-    console.log(`Current value: ${change.date}`);
-    console.log(`Current mode: ${change.mode}`);
+ 
   }
 
 
 
 
- /* downloadPDF(): void {
+   async downloadPDF(): Promise<any> {
+
+  
+  
+
     if (!this.dailyData) return; // Exit if there's no data
   
     // Define the document structure
     const documentDefinition: any = {
       content: [
-        { text: 'Benedetto', style: 'header' },
-        { text: `Date: ${this.date}`, style: 'subheader' },
-        { text: `Income: ${this.dailyData.income} TND`, style: 'content' },
-        { text: 'Outcomes:', style: 'content' },
+        {
+          margin: [0,20, 0, 20],
+          table: {
+            widths: ['*'],
+            body: [
+              [
+                {
+                  table: {
+                    widths: ['*', '*'],
+                    body: [
+                      [
+                        { text: 'Benedetto', style: 'header', margin: [0, 0, 0, 0] },
+                        { text: `Date: ${this.date}`, style: 'subheader', margin: [0, 0, 0, 0]},
+                                              ]
+                    ]
+                  },
+                  layout: {
+                    hLineWidth: function () { return 1; },
+                    vLineWidth: function () { return 1; },
+                    hLineColor: function () { return '#000000'; },
+                    vLineColor: function () { return '#000000'; },
+                  }
+                }
+              ]
+            ],
+            layout: {
+              hLineWidth: function () { return 1; },
+              vLineWidth: function () { return 1; },
+              hLineColor: function () { return '#000000'; },
+              vLineColor: function () { return '#000000'; },
+            }
+          }
+        },
+        { text: `Income: ${this.dailyData.income} TND`, style: 'content' , margin: [0,20, 0, 0]},
+        { text: 'Outcomes:', style: 'content',margin: [0,50, 0, 0] },
         ...this.dailyData.expenses.map((expense: any) => ({
-          text: `${expense.key} : ${expense.value} TND`,
+          text: `* ${expense.key} : ${expense.value} TND`,
           style: 'content'
         })),
         { text: `Total Outcomes: ${this.dailyData.totalOutcomes} TND`, style: 'content' },
-        { text: `Net Total: ${this.dailyData.total} TND`, style: 'content' },
+        { text: `Total: ${this.dailyData.total} TND`, style: 'content' ,margin: [0,50, 0, 0]},
       ],
       styles: {
         header: {
@@ -101,9 +146,28 @@ export class Tab1Page {
         },
       }
     };
-  
-    // Generate and download the PDF
     pdfMake.createPdf(documentDefinition).download(`Daily_Report_${this.date}.pdf`);
-  }*/
+    // Generate and download the PDF
+    pdfMake.createPdf(documentDefinition).getBlob(async (blob) => {
+      try {
+        // Convert the PDF blob to base64 string
+        const base64Data = await blobToBase64(blob);
+        const base64String = base64Data.split(',')[1]; // Get base64 content only
+
+        // Save the PDF file using Capacitor Filesystem
+        const result = await Filesystem.writeFile({
+          path: `Daily_Report_${this.date}.pdf`,
+          data: base64String,
+          directory: Directory.Documents
+        });
+
+        console.log('File saved:', result.uri);
+      } catch (error) {
+        console.error('Error saving file:', error);
+      }
+    });
+
+
+  } 
   
 }

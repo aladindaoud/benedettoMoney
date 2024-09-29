@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header mode="md" [translucent]="true">
   <ion-toolbar>
     <ion-title>
       Modify Daily Finance
@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header mode="md" collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Modify Daily Finance</ion-title>
     </ion-toolbar>
@@ -20,32 +20,35 @@
     </div>
 
     <div *ngIf="record">
-      <h3>Record Details:</h3>
       <div class="input">
         <label for="income">Income:</label>
         <input id="income" type="number" [(ngModel)]="record.income" class="p-inputtext" />
       </div>
 
-      <h4>Expenses:</h4>
+
+      <div class="input">
+        <ion-row><ion-col>
+          <ion-item style="border-radius: 7px;" lines="none">     
+            <ion-label>Expenses</ion-label>
+            <ion-button class="Button"   shape="only-icon" (click)="addExpense()" color="secondary"><ion-icon name="add"></ion-icon></ion-button>
+          </ion-item>
+        </ion-col>
+        
+        </ion-row>
+     
       <div *ngFor="let expense of record.expenses; let i = index">
         <div class="input">
           <label for="expenseTitle{{ i }}">Title:</label>
           <input id="expenseTitle{{ i }}" type="text" [(ngModel)]="expense.key" class="p-inputtext" />
-        </div>
-        <div class="input">
           <label for="expenseValue{{ i }}">Amount:</label>
           <input id="expenseValue{{ i }}" type="number" [(ngModel)]="expense.value" class="p-inputtext" />
+          <ion-button fill="outline" (click)="removeExpense(i)"  >Delete</ion-button>
         </div>
-
-        <!-- Button to delete the current expense -->
-        <ion-button (click)="removeExpense(i)" color="danger">Delete</ion-button>
+           
       </div>
-
+    </div>
       <!-- Button to add a new expense -->
-      <div>
-        <ion-button (click)="addExpense()" color="secondary">Add New Expense</ion-button>
-      </div>
-
+ 
       <ion-button (click)="saveChanges()" color="primary">Save Changes</ion-button>
     </div>
     

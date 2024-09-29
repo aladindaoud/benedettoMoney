@@ -53,7 +53,6 @@ export class Tab2Page {
       message: message,
       mode:"ios",
       duration: 2000,
-      color: color,
       position: 'top'
     });
     toast.present();

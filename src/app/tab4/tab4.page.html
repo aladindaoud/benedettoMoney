@@ -1,0 +1,66 @@
+<ion-header mode="md" [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Monthly Finance</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header mode="md" collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Monthly Finance</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-refresher mode="ios" slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <!-- Year Selector -->
+  <hr>  <hr>
+  <ion-item mode="ios">
+    <ion-label >Select Year</ion-label>
+    <ion-select slot="end" [(ngModel)]="selectedYear" (ionChange)="onYearOrMonthChange()">
+      <ion-select-option style="" *ngFor="let year of availableYears" [value]="year">{{ year }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Month Selector -->
+  <ion-item mode="ios">
+    <ion-label>Select Month</ion-label>
+    <ion-select  slot="end" [(ngModel)]="selectedMonth" (ionChange)="onYearOrMonthChange()">
+      <ion-select-option *ngFor="let month of availableMonths" [value]="month">{{ month }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <hr> <hr>
+  <p style="    padding-left: 15px;
+  font-weight: bold;">Days</p>
+  <!-- Accordion to display daily records -->
+  <ion-accordion-group>
+    <ion-accordion *ngFor="let record of dailyRecords">
+      <ion-item slot="header">
+        <ion-label>{{ record.date }}</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <p>Income: {{ record.income | currency:'TND' }}</p>
+        <p>Outcomes:</p>
+        <ul>
+          <li *ngFor="let expense of record.expenses">
+            {{ expense.key }}: {{ expense.value | currency:'TND' }}
+          </li>
+        </ul>
+        <p>Total: {{ record.total | currency:'TND' }}</p>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <!-- Monthly totals -->
+  <ion-card style="padding: 15px;" mode="ios">
+<ion-card-title>Total for {{ selectedYear }}-{{ selectedMonth }}</ion-card-title>
+<p>Total Income: {{ totalIncome |  currency:'TND' }}</p>
+<p>Total Outcomes: {{ totalExpenses | currency:'TND':'TND'}}</p>
+<p>Total: {{ netTotal | currency:'TND':'TND' }}</p>
+
+  </ion-card>
+ 
+ 
+  
+</ion-content>

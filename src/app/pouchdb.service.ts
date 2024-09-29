@@ -26,7 +26,7 @@ export class PouchdbService {
 
     try {
       await this.db.put(record);
-      console.log('Record saved successfully!');
+   
     } catch (error) {
       console.error('Error saving record:', error);
       throw error;
@@ -51,14 +51,32 @@ export class PouchdbService {
       if (existingRecord) {
         // Delete the old record
         await this.db.remove(existingRecord);
-        console.log('Old record deleted successfully.');
+       
       }
       
       // Add the new record
       await this.addRecord(date, income, expenses);
-      console.log('New record added successfully!');
+ 
     } catch (error) {
       console.error('Error updating record:', error);
+      throw error;
+    }
+  }
+
+
+
+  async getRecordsByMonth(month: string): Promise<any[]> {
+    try {
+      const response = await this.db.allDocs({
+        include_docs: true,
+        startkey: `${month}-01`,
+        endkey: `${month}-31`
+      });
+
+      const records = response.rows.map(row => row.doc);
+      return records;
+    } catch (error) {
+       
       throw error;
     }
   }
