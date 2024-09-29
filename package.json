@@ -30,6 +30,7 @@
     "@capacitor/keyboard": "6.0.2",
     "@capacitor/status-bar": "6.0.1",
     "@ionic/angular": "^8.0.0",
+    "@typescript-eslint/utils": "^8.7.0",
     "ionicons": "^7.0.0",
     "ng-zorro-antd": "^18.1.1",
     "pdfmake": "^0.2.13",
@@ -44,7 +45,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.0.0",
     "@angular-eslint/builder": "^18.0.0",
-    "@angular-eslint/eslint-plugin": "^18.0.0",
+    "@angular-eslint/eslint-plugin": "^18.3.1",
     "@angular-eslint/eslint-plugin-template": "^18.0.0",
     "@angular-eslint/schematics": "^18.0.0",
     "@angular-eslint/template-parser": "^18.0.0",
