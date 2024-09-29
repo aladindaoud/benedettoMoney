@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { PouchdbService } from '../pouchdb.service'; // Adjust the import according to your structure
 import { formatDate } from '@angular/common';
-import * as pdfMake from 'pdfmake/build/pdfmake';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+//import pdfMake from 'pdfmake/build/pdfmake';
+//import pdfFonts from 'pdfmake/build/vfs_fonts';
+ 
 import { Filesystem, Directory } from '@capacitor/filesystem';
-// Set up the font files (vfs)
-(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+ 
+ 
+ 
+
 
 const blobToBase64 = (blob: Blob): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -29,7 +32,7 @@ export class Tab1Page {
 
   constructor(private pouchdbService: PouchdbService) {
     
-
+  //  pdfMake.vfs = pdfFonts.pdfMake.vfs;
    
    
 
@@ -80,7 +83,7 @@ export class Tab1Page {
 
    async downloadPDF(): Promise<any> {
 
-  
+  /*
   
 
     if (!this.dailyData) return; // Exit if there's no data
@@ -148,7 +151,7 @@ export class Tab1Page {
     };
     pdfMake.createPdf(documentDefinition).download(`Daily_Report_${this.date}.pdf`);
     // Generate and download the PDF
-    pdfMake.createPdf(documentDefinition).getBlob(async (blob) => {
+    pdfMake.createPdf(documentDefinition).getBlob(async (blob:any) => {
       try {
         // Convert the PDF blob to base64 string
         const base64Data = await blobToBase64(blob);
@@ -167,7 +170,7 @@ export class Tab1Page {
       }
     });
 
-
+*/
   } 
   
 }

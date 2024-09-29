@@ -1,10 +1,22 @@
 import { Injectable } from '@angular/core';
-import PouchDB from 'pouchdb';
+import PouchDB from 'pouchdb'; // Use default import if needed
+
+interface Expense {
+  key: string;
+  value: number;
+}
+
+interface Record {
+  _id: string;
+  date: string;
+  income: number;
+  expenses: Expense[];
+  total: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class PouchdbService {
   private db: PouchDB.Database;
 
@@ -12,11 +24,11 @@ export class PouchdbService {
     this.db = new PouchDB('dailyFinance');
   }
 
-  async addRecord(date: string, income: number, expenses: { key: string; value: number }[]): Promise<void> {
+  async addRecord(date: string, income: number, expenses: Expense[]): Promise<void> {
     const expenseTotal = expenses.reduce((sum, expense) => sum + expense.value, 0);
     const total = income - expenseTotal;
 
-    const record = {
+    const record: Record = {
       _id: date,
       date: date,
       income: income,
@@ -26,7 +38,6 @@ export class PouchdbService {
 
     try {
       await this.db.put(record);
-   
     } catch (error) {
       console.error('Error saving record:', error);
       throw error;
@@ -43,27 +54,26 @@ export class PouchdbService {
     }
   }
 
-
-  async updateRecord(date: string, income: number, expenses: { key: string; value: number }[]): Promise<void> {
+  async updateRecord(date: string, income: number, expenses: Expense[]): Promise<void> {
     try {
-      // Retrieve the existing record
       const existingRecord = await this.getRecord(date);
-      if (existingRecord) {
-        // Delete the old record
-        await this.db.remove(existingRecord);
-       
-      }
-      
-      // Add the new record
-      await this.addRecord(date, income, expenses);
- 
+
+      // Update only the necessary fields
+      const updatedRecord = {
+        ...existingRecord,
+        income: income,
+        expenses: expenses,
+        total: income - expenses.reduce((sum, expense) => sum + expense.value, 0),
+      };
+
+      // Save the updated record
+      await this.db.put(updatedRecord);
+
     } catch (error) {
       console.error('Error updating record:', error);
       throw error;
     }
   }
-
-
 
   async getRecordsByMonth(month: string): Promise<any[]> {
     try {
@@ -73,10 +83,9 @@ export class PouchdbService {
         endkey: `${month}-31`
       });
 
-      const records = response.rows.map(row => row.doc);
+      const records = response.rows.map((row: any) => row.doc);
       return records;
     } catch (error) {
-       
       throw error;
     }
   }
