@@ -1,18 +1,13 @@
-<ion-header mode="md" [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-    Add Daily Finance
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+ 
 
 <ion-content [fullscreen]="true">
-  <ion-header  mode="md" collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Add Daily Finance</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
+  <hr><hr>
+  <ion-item lines="none" >
+    <ion-label class="text">
+      Add Daily Finance
+  </ion-label>
+  <input id="date" type="date" [(ngModel)]="date" class="p-inputtext date" />
+  </ion-item >
   <!-- <p-calendar 
   [(ngModel)]="date" 
   [showIcon]="true" 
@@ -21,24 +16,65 @@
 
 
   <div class="p-fluid">
-   
-    <div class="input">
-      <label for="date">Date:</label>
-      <input id="date" type="date" [(ngModel)]="date" class="p-inputtext" />
-    </div>
+    <ion-item lines="none">
+      <ion-label class="text">
+        Income
+      </ion-label>
+      <ion-icon style=" 
+         border: none;
+      color: #636ae8;
+      padding-right: 10px; font-weight: bold;"
+         slot="end" name="arrow-down-outline"></ion-icon>
+
+     </ion-item>
+     <ion-item style="margin-top: 0px !important;" mode="ios" lines="none">
+              <ion-input mode="ios" id="income" type="number" [(ngModel)]="income" placeholder="0 TND" ></ion-input>
+     </ion-item>
+    
   
-    <div  class="input">
-      <label for="income">Income</label>
-      <input id="income" type="number" [(ngModel)]="income" class="p-inputtext" />
-    </div>
+ 
+
+     <ion-item lines="none">
+      <ion-label class="text">
+        Outcomes
+      </ion-label>
+      <ion-icon style=" 
+         border: none;
+      color: #E8618CFF;
+      padding-right: 10px; font-weight: bold;"
+         slot="end" name="arrow-up-outline"></ion-icon>
+     </ion-item>
+
+
+
   
-    <div  class="input">
+    <ion-card mode="ios"  class="input">
       <hr>
-      <label for="expenseKey">Title</label>
-      <input id="expenseKey" [(ngModel)]="newKey" class="p-inputtext" />
-      <hr>
-      <label for="expenseValue">Price</label>
-      <input id="expenseValue" type="number" [(ngModel)]="newValue" class="p-inputtext" />
+      <ion-item lines="none" mode="ios">
+        <ion-label for="expenseKey" class="text">
+          Title:
+        </ion-label>
+        <ion-input   class="text" type="text" placeholder="Enter outcome title" id="expenseKey" [(ngModel)]="newKey"  ></ion-input>
+        
+        <!-- Button to open keyword selection modal -->
+    <ion-button style="width: auto;" shape="icon-only" slot="end" (click)="openKeywordList()">
+      <ion-icon  name="list"></ion-icon>  
+    </ion-button>
+     
+      </ion-item>
+      
+      <ion-item lines="none" mode="ios">
+        <ion-label for="expenseKey" class="text">
+          Price:
+        </ion-label>
+        <ion-input class="text" type="number" placeholder="Enter outcome price" id="expenseValue" [(ngModel)]="newValue"  ></ion-input>
+      
+ 
+      </ion-item>
+
+ 
+     
+     
       <ion-button style="    width: -webkit-fill-available;
       margin-top: 15px;" (click)="addExpense()">
         <ion-icon name="add" slot="start"></ion-icon>
@@ -46,26 +82,34 @@ Add
       </ion-button>
   
 
+      <ion-item lines="none">
+        <ion-label class="text">
+          Added outcomes
+        </ion-label>
+       </ion-item>
+     
+       <ion-card mode="ios" style="margin: 0 !important;">
+        <div *ngFor="let expense of expenses; let i = index">
+          <ion-item style="border-radius: 7px; margin-top: 0 !important;" mode="ios" lines="none">
+            <ion-label  slot="start">{{ expense.key }}</ion-label>
+            <ion-label slot="end">{{ expense.value | currency:'TND': 'TND' }}</ion-label>
+            <ion-button mode="ios" (click)="deleteExpense(i)" color="danger" fill="clear" slot="end">
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </div>
+       </ion-card>
+ 
 
-      <h3 class="input">Added outcomes</h3>
-      <div *ngFor="let expense of expenses; let i = index">
-        <ion-item style="border-radius: 7px;" mode="ios" lines="none">
-          <ion-label>{{ expense.key }}</ion-label>
-          <ion-label slot="end">{{ expense.value | currency:'TND': 'TND' }}</ion-label>
-          <ion-button mode="ios" (click)="deleteExpense(i)" color="danger" fill="clear" slot="end">
-            <ion-icon name="trash"></ion-icon>
-          </ion-button>
-        </ion-item>
-      </div>
-
-    </div>
+    </ion-card>
   
 
 
 
-    <ion-button mode="ios" style="    width: -webkit-fill-available;
-    margin-top: 15px;" (click)="saveRecord()">
-      <ion-icon name="add" slot="start"></ion-icon>
+    <ion-button mode="ios" style="display: block;
+    margin: auto;
+    width: 90%;"  (click)="saveRecord()">
+      <ion-icon name="calculator" slot="start"></ion-icon>
 Save
     </ion-button>
  

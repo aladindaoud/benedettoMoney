@@ -1,65 +1,108 @@
-<ion-header mode="md" [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Modify Daily Finance
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+ 
 
 <ion-content [fullscreen]="true">
-  <ion-header mode="md" collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Modify Daily Finance</ion-title>
-    </ion-toolbar>
-  </ion-header>
+ 
+  <hr><hr>
+  <ion-item lines="none" >
+    <ion-label class="text">
+      Modify Daily Finance
+  </ion-label>
+  <input id="selectDate" type="date" [(ngModel)]="selectedDate" (change)="loadRecord()" class="p-inputtext date" />
+  </ion-item >
 
   <div class="p-fluid">
-    <div class="input">
-      <label for="selectDate">Select Date:</label>
-      <input id="selectDate" type="date" [(ngModel)]="selectedDate" (change)="loadRecord()" class="p-inputtext" />
-    </div>
-
-    <div *ngIf="record">
-      <div class="input">
-        <label for="income">Income:</label>
-        <input id="income" type="number" [(ngModel)]="record.income" class="p-inputtext" />
-      </div>
+    <div *ngIf="record"  >
+<div *ngIf="record.income >0 ; else noDataTemplate">
 
 
-      <div class="input">
-        <ion-row><ion-col>
-          <ion-item style="border-radius: 7px;" lines="none">     
-            <ion-label>Expenses</ion-label>
-            <ion-button class="Button"   shape="only-icon" (click)="addExpense()" color="secondary"><ion-icon name="add"></ion-icon></ion-button>
+      <ion-item lines="none">
+        <ion-label class="text">
+          Income
+        </ion-label>
+        <ion-icon style=" 
+           border: none;
+        color: #636ae8;
+        padding-right: 10px; font-weight: bold;"
+           slot="end" name="arrow-down-outline"></ion-icon>
+  
+       </ion-item>
+       <ion-item style="margin-top: 0px !important;" mode="ios" lines="none">
+        <ion-input mode="ios" id="income" type="number" [(ngModel)]="record.income" ></ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label class="text">
+          Outcomes
+        </ion-label>
+        <ion-icon style=" 
+           border: none;
+        color: #E8618CFF;
+        padding-right: 10px; font-weight: bold;"
+           slot="end" name="arrow-up-outline"></ion-icon>
+       </ion-item>
+        <ion-card mode="ios"  class="input">
+ 
+
+       
+          <ion-item style="border-radius: 7px; --background: #E8618CFF;
+          border-radius: 7px;" lines="none">     
+          <ion-label class="text" style="color: white;">Add new outcome</ion-label>
+          <ion-icon size="small" style="color: white;"  name="add-outline"  slot="end" class="Button" mode="ios" (click)="addExpense()" ></ion-icon> 
           </ion-item>
-        </ion-col>
-        
-        </ion-row>
-     
+  
+
+
+
+
+
       <div *ngFor="let expense of record.expenses; let i = index">
-        <div class="input">
-          <label for="expenseTitle{{ i }}">Title:</label>
-          <input id="expenseTitle{{ i }}" type="text" [(ngModel)]="expense.key" class="p-inputtext" />
-          <label for="expenseValue{{ i }}">Amount:</label>
-          <input id="expenseValue{{ i }}" type="number" [(ngModel)]="expense.value" class="p-inputtext" />
-          <ion-button fill="outline" (click)="removeExpense(i)"  >Delete</ion-button>
-        </div>
+ 
+        <ion-item lines="none" mode="ios">
+          <ion-label   class="text">
+            Title:
+          </ion-label>
+          <ion-input   class="text" type="text" id="expenseTitle{{ i }}" [(ngModel)]="expense.key"  ></ion-input>
+          <ion-button   slot="end"  (click)="openKeywordList(i)">
+            <ion-icon name="list"></ion-icon> 
+          </ion-button>
+        </ion-item>
+        
+        <ion-item lines="none" mode="ios">
+          <ion-label   class="text">
+            Price:
+          </ion-label>
+          <ion-input slot="end" class="text" type="number"   id="expenseValue{{ i }}"  [(ngModel)]="expense.value"  ></ion-input>
+        </ion-item>
+        <ion-button style="width: 100%;" (click)="removeExpense(i)"  >    <ion-icon name="trash" slot="start"></ion-icon> Delete</ion-button>
+
+
+ 
            
       </div>
-    </div>
+    </ion-card>
+
+
+  
       <!-- Button to add a new expense -->
  
-      <ion-button (click)="saveChanges()" color="primary">Save Changes</ion-button>
+      <ion-button mode="ios" (click)="saveChanges()"   style="width: 90%;display: block;margin: auto;"><ion-icon slot="start" name="calculator-outline"></ion-icon>Save Changes</ion-button>
     </div>
     
-    <div style="display: block;
-    margin: auto;
-    width: 300px;
-    padding: 20px;
-    font-weight: bold;
-    margin-top: 30px;
-    border-radius: 12px;
-    text-align: center;
-    background: #E57373;" *ngIf="!record">No record found for this date.</div>
+  <ng-template #noDataTemplate>
+    <ion-item   lines="none">
+      <ion-label style="  
+      line-height: 28px;
+          font-size: 16px;
+          font-weight: bold;
+          font-family: arch !important;
+        color:  #E8618CFF;" class="text2">
+    No data available for this date.
+      </ion-label>
+     </ion-item>
+    </ng-template>
   </div>
+  </div> 
+
+
+
 </ion-content>

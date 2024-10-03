@@ -1,12 +1,79 @@
 .p-fluid {
  
     margin: auto;
-    padding: 20px;
+    //padding: 20px;
 
   }
   .input{
     padding: 10px;
-    background:  #e1e1e1ab;
+ //   background:  #e1e1e1ab;
     border-radius: 12px;
     margin-top: 15px;
   }
+
+  p{
+    display: flex;
+    gap: 10px;
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.deps{
+    --background: #edededcc;
+    border-radius: 12px;
+    margin-top: 10px;
+}
+
+ion-item{
+  
+    border-radius: 12px;
+    margin-top: 10px;
+}
+
+ion-button{
+    width: 100%;
+    --background: #636AE8FF;
+}
+
+.text {
+    line-height: 28px;
+    font-size: 16px;
+    font-weight: bold;
+      font-family: "arch" !important;
+  }
+.date{
+    font-family: 'arch';
+    font-weight: bold;
+    border: none;
+    color: #636AE8FF;
+}
+
+.text2 {
+    line-height: 28px;
+    font-size: 26px;
+    font-weight: bold;
+      font-family: "arch" !important;
+  }
+
+  .p-inputtext:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: none !important;
+    border-color: #fff !important;}
+
+    .text3 {
+        line-height: 28px;
+        font-size: 16px;
+        font-weight: bold;
+          font-family: "arch" !important;
+      }
+
+      .text3 {
+        line-height: 28px;
+        font-size: 16px;
+   
+          font-family: "arch" !important;
+      }

@@ -1,0 +1,16 @@
+<ion-header mode="ios">
+  <ion-toolbar>
+    <ion-title>Select Keyword</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="ios">
+  <ion-list mode="ios">
+    <ion-item mode="ios" *ngFor="let keyword of keywords" (click)="selectKeyword(keyword.keyword)">
+      <ion-label>{{ keyword.keyword }}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

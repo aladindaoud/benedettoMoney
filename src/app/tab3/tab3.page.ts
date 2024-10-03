@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { PouchdbService } from '../pouchdb.service';
-import { ToastController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
+import { KeywordListComponent } from '../keyword-list/keyword-list.component';
  
 
 @Component({
@@ -12,8 +13,9 @@ import { formatDate } from '@angular/common';
 export class Tab3Page {
   selectedDate: string = '';
   record: any;
-
-  constructor(private pouchdbService: PouchdbService, private toastController : ToastController) {
+  newKey: string = '';
+  keywords: string[] = []; // This will hold the list of keywords from the database
+  constructor(private pouchdbService: PouchdbService, private toastController : ToastController, private modalCtrl : ModalController) {
 
     this.selectedDate =  formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
     this.loadRecord()
@@ -24,13 +26,32 @@ export class Tab3Page {
       try {
         this.record = await this.pouchdbService.getRecord(this.selectedDate);
         if (!this.record) {
+          console.log(this.record)
           this.record = { income: 0, expenses: [] }; // Initialize if no record is found
         }
       } catch (error) {
-        console.error('Error loading record:', error);
+        this.record = { income: 0, expenses: [] }; 
       }
     }
   }
+
+
+  async openKeywordList(index: number) {
+    const modal = await this.modalCtrl.create({
+      component: KeywordListComponent,
+    });
+  
+    await modal.present();
+  
+    const { data } = await modal.onDidDismiss();
+  
+    if (data && data.keyword) {
+      // Update the key of the i-th element in the record's expenses array
+      this.record.expenses[index].key = data.keyword;
+    }
+  }
+  
+
 
   addExpense() {
     // Add a new empty expense with both title (key) and value

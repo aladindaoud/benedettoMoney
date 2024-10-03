@@ -1,0 +1,70 @@
+ 
+<ion-content [fullscreen]="true">
+  <hr><hr>
+  <ion-item lines="none" >
+    <ion-label class="text">
+      Add New Outcome Keyword
+  </ion-label>
+  </ion-item >
+
+  <div class="container">
+   
+  
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+
+        <ion-item lines="none" >
+          <ion-label for="keyword" class="text">
+            Keyword
+        </ion-label>
+        <ion-input type="text"
+        id="keyword"
+        [(ngModel)]="keyword"
+        name="keyword"
+        required  slot="end"
+        placeholder="Enter your keyword"
+        #keywordInput="ngModel" ></ion-input>
+        </ion-item >
+ 
+      </div>
+  
+      
+      <ion-button mode="ios" style="    width: 90%;
+      margin-top: 15px;margin: auto;display: block;"  type="submit" class="btn btn-primary" [disabled]="!keywordInput.valid">
+        <ion-icon name="add" slot="start"></ion-icon>
+        Add Keyword
+      </ion-button>
+    
+    
+    </form>
+  
+   
+  </div>
+  
+
+
+
+  <ion-item lines="none" >
+    <ion-label class="text">
+      Stored Keyword
+  </ion-label>
+  </ion-item >
+
+
+ <ion-card mode="ios">
+  <div *ngIf="keywords.length > 0; else noKeywords">
+    <ion-chip mode="ios" *ngFor="let keyword of keywords">
+      <ion-label>{{ keyword.keyword }}</ion-label>
+      <ion-icon name="close-circle" (click)="deleteKeyword(keyword._id)"></ion-icon>
+    </ion-chip>
+  </div>
+
+  <ng-template #noKeywords>
+    <p>No keywords added yet.</p>
+  </ng-template>
+ </ion-card>
+
+
+
+
+</ion-content>

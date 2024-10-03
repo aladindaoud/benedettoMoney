@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PouchdbService } from '../pouchdb.service';
-import { ToastController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
+import { KeywordListComponent } from '../keyword-list/keyword-list.component';
 
 @Component({
   selector: 'app-tab2',
@@ -9,12 +10,12 @@ import { ToastController } from '@ionic/angular';
 })
 export class Tab2Page {
   date: string = new Date().toISOString().split('T')[0]; // Default to today
-  income: number = 0;
+  income!: number ;
   expenses: { key: string; value: number }[] = [];
   newKey: string = '';
   newValue: number | null = null;
 
-  constructor(private pouchdbService: PouchdbService,private toastController: ToastController) {}
+  constructor(private pouchdbService: PouchdbService,private toastController: ToastController,private modalCtrl: ModalController) {}
 
   addExpense() {
     if (this.newKey && this.newValue !== null) {
@@ -58,4 +59,17 @@ export class Tab2Page {
     toast.present();
   }
 
+  async openKeywordList() {
+    const modal = await this.modalCtrl.create({
+      component: KeywordListComponent,
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+
+    if (data && data.keyword) {
+      this.newKey = data.keyword; // Set the selected keyword as the title
+    }
+  }
 }

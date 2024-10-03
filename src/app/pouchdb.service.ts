@@ -89,4 +89,29 @@ export class PouchdbService {
       throw error;
     }
   }
+
+
+
+  async calculateTotalIncomeAndExpenses(): Promise<number> {
+    let totalIncome = 0;
+    let totalExpenses = 0;
+
+    try {
+      const response = await this.db.allDocs({ include_docs: true });
+      
+      // Iterate through each record to calculate total income and expenses
+      response.rows.forEach((row: any) => {
+        const record = row.doc as Record;
+        totalIncome += record.income; // Sum up the income
+        totalExpenses += record.expenses.reduce((sum, expense) => sum + expense.value, 0); // Sum up the expenses
+      });
+
+      const netAmount:number = totalIncome - totalExpenses; // Calculate net amount
+
+      return netAmount 
+    } catch (error) {
+      console.error('Error calculating total income and expenses:', error);
+      throw error;
+    }
+  }
 }

@@ -16,7 +16,7 @@ export class Tab4Page implements OnInit {
   totalIncome = 0;
   totalExpenses = 0;
   netTotal = 0;
-
+  stuckedTotal= 0;
   constructor(private pouchdbService: PouchdbService) {}
 
   ngOnInit() {
@@ -28,8 +28,17 @@ export class Tab4Page implements OnInit {
     this.selectedMonth = this.getCurrentMonth();
     // Load data for the selected year and month
     this.loadMonthlyData();
+    this.showTotalAmounts()
   }
-
+  
+  async  showTotalAmounts() {
+    try {
+       this.stuckedTotal = await this.pouchdbService.calculateTotalIncomeAndExpenses();
+      
+    } catch (error) {
+      console.error('Failed to retrieve totals:', error);
+    }
+  }
     
   handleRefresh(event:any) {
     setTimeout(() => {

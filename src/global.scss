@@ -36,12 +36,21 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 //@import "@ionic/angular/css/palettes/dark.system.css";
 :root {
-    --ion-color-primary: #3880ff;
-    --ion-color-secondary: #3dc2ff;
-    --ion-color-tertiary: #7044ff;
+    --ion-color-primary: #636ae8;
+    --ion-color-secondary: #636ae8;
+    --ion-color-tertiary: #636ae8;
   
     // Add your custom light theme colors
     --ion-background-color: #ffffff;
     --ion-text-color: #000000;
   }
+
+  @font-face {
+    font-family: "arch";
+    src: url('/assets/fonts/Archivo-Regular.ttf') format('opentype');
+    src: url('/assets/fonts/Archivo-Bold.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
   
+  }
+ 
